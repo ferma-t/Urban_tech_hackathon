@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [
-    'app',
+    'urbantech',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,13 +53,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'UrbanTechHackathon.urls'
-
+TEMPLATE_DIR = os.path.join(BASE_DIR, "urbantech/templates/urbantech/")
 # Template configuration
 # https://docs.djangoproject.com/en/2.1/topics/templates/
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
