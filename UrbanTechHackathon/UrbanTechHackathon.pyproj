@@ -34,6 +34,9 @@
   <ItemGroup>
     <Compile Include="urbantech\forms.py" />
     <Compile Include="urbantech\models.py" />
+    <Compile Include="urbantech\XMLParser.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="urbantech\tests.py" />
     <Compile Include="urbantech\views.py" />
     <Compile Include="urbantech\__init__.py" />
