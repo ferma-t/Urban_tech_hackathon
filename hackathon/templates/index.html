@@ -1,0 +1,283 @@
+{% extends "layout.html" %} {% load staticfiles %} {% block content %}
+
+<nav class="white main-navbar">
+  <div class="nav-wrapper container">
+    <a href="#" class="brand-logo">
+      <img
+        src="{% static 'img/findepicon.jpg' %}"
+        class="fin-dep-icon"
+        alt=""
+      />
+    </a>
+    <!-- <ul class="left">
+          <li><a href="sass.html">Предыдущий период</a></li>
+          <li><a href="sass.html">Текущий период</a></li>
+          <li><a href="sass.html">Следующий период</a></li>
+        </ul> -->
+    <ul id="nav-mobile" class="right">
+      <!-- <li><a href="sass.html">Карта проектов</a></li> -->
+      <!-- <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Username</a></li> -->
+      <li>
+        <a href="#!" class="dropdown-trigger" data-target="dropdown1">
+          <i class="material-icons right">account_circle</i>
+          {{request.user.first_name}} {{request.user.last_name}}
+        </a>
+      </li>
+
+      <li><a href="accounts/logout">Выйти</a></li>
+
+    </ul>
+  </div>
+</nav>
+
+<!-- Dropdown Structure -->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#!">Москва</a></li>
+  <!-- <li class="divider"></li> -->
+  <!-- <li><a href="#!">three</a></li> -->
+</ul>
+
+<div class="periods">
+  <ul>
+    <li><a href="#!">Предыдущий период</a></li>
+    <li class="active"><a href="#!">Текущий период</a></li>
+    <li><a href="#!">Следующий период</a></li>
+    <li class="right">
+      <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+        <i class="material-icons left">menu</i>
+        <!-- <i class="fas fa-sliders-h"></i> -->
+        Фильтры
+      </a>
+    </li>
+  </ul>
+</div>
+
+<ul id="slide-out" class="sidenav">
+  <li><a class="subheader">Фильтровать по</a></li>
+
+  <li>
+    <a href="#">
+      <label>
+        <input type="checkbox" />
+        <span>Процессам</span>
+      </label>
+    </a>
+  </li>
+  <li>
+    <a href="#">
+      <label>
+        <input type="checkbox" />
+        <span>Периоду</span>
+      </label>
+    </a>
+  </li>
+  <li>
+    <a href="#">
+      <label>
+        <input type="checkbox" />
+        <span>Классу процесса</span>
+      </label>
+    </a>
+  </li>
+</ul>
+
+<div class="card-page" ng-show="selectedCard">
+  <div class="right">
+    <i class="material-icons close" ng-click="selectedCard = null;">close</i>
+  </div>
+
+  <div class="container">
+    <div class="main-info">
+      <span class="date">[[selectedCard.expiration_date]]</span>
+      <span>на основании [[selectedCard.law_base]]</span>
+      <span><i class="far fa-check-square"></i> [[getDocumentsCount(selectedCard.document_type)]]/[[selectedCard.document_type.length]]</span>
+    </div>
+    <h6>
+      [[selectedCard.description]]
+    </h6>
+
+    <p ng-repeat="doc_type in selectedCard.document_type">
+      <label>
+        <input type="checkbox" ng-checked="doc_type.documents.length !== 0"/>
+        <span>Отправить отчет по форме 2 в министерство образования</span>
+        <a ng-if="doc_type.template_file" href="[[doc_type.template_file]]">Скачать шаблон</a>
+      </label>
+    </p>
+
+    <div class="where-from-to">
+      <p class="center">[[selectedCard.from_institute.name]]</p>
+      <div class="center">
+        <i class="material-icons">arrow_downward</i>
+      </div>
+      <p class="center">[[selectedCard.to_institute.name]]</p>
+    </div>
+    <!-- <p>
+      <label>
+        <input type="checkbox" />
+        <span>Отправить отчет по форме 2 в министерство образования</span>
+      </label>
+    </p>
+    <p>
+      <label>
+        <input type="checkbox" checked="checked" />
+        <span>Отправить отчет по форме 2 в министерство образования</span>
+      </label>
+    </p> -->
+    <p>
+      Перечислить самые существенные компоненты описания проекта несложно. В
+      этом документе официально объявляется о запуске проекта и назначении
+      менеджера проекта. Также в нем обычно указывается номер счета, куда
+      поступают выделенные на проект средства. Кроме того, содержится краткая
+      аргументация задач последнего, то есть его обоснование.
+    </p>
+    <p>
+      Есть у описания проекта одна любопытная особенность: составить его должен
+      менеджер проекта, а вот подписывать предстоит тому, кто отвечает за
+      создание и финансирование проекта. Передавать полномочия по составлению
+      концепции и ее утверждению одному и тому же человеку – менеджеру проекта –
+      не имело бы никакого смыла. И тем не менее описание должен составлять
+      именно менеджер проекта, ведь для него это возможность с самого начала
+      обозначить свое видение.
+    </p>
+  </div>
+</div>
+
+<div class="working-area" ng-hide="selectedCard">
+  <div class="sidepanel">
+    <div class="warning">
+      <div class="label" ng-click="showBudgetStatus = !showBudgetStatus">
+        Истекает срок
+        <span class="right">3</span>
+      </div>
+    </div>
+    <div class="vedomstvo">
+      <div class="label" ng-click="showBudgetStatus = !showBudgetStatus">
+        Ведомство
+        <span class="right">4</span>
+      </div>
+    </div>
+    <div class="info">
+      <div class="label">
+        Совет
+      </div>
+      <p>
+        Начинайте подготовку годового отчета в сентябре, чтобы успеть вовремя
+      </p>
+    </div>
+  </div>
+
+  <div class="kanban" ng-hide="showBudgetStatus">
+    <div
+      class="column"
+      ng-repeat="column in [{label:'Нужно сделать', value: 'IN_PROCESS'},{label:'Просрочено', value: 'OVERDUE'}, {label:'Cделано', value: 'DONE'}]"
+    >
+      <div class="column-header">
+        <h6>[[column.label]]</h6>
+      </div>
+      <div class="cards-wrapper" data-simplebar>
+        <div
+          class="card"
+          ng-repeat="process in processes | filter: { status: column.value } "
+          ng-click="openCard(process)"
+        >
+          <div class="card-title">
+            <span class="date">
+              <!-- 3 июня -->
+              [[process.expiration_date]]
+            </span>
+            <span class="mail">
+              <i class="far fa-check-square"></i> [[getDocumentsCount(process.document_type)]]/[[process.document_type.length]]
+            </span>
+            <span class="to-institute">[[process.to_institute.name]]</span>
+          </div>
+          <div class="card-content">
+            <p>
+              [[process.description]]
+            </p>
+          
+          </div>
+          <i
+            ng-if="$index === 0"
+            class="fas fa-lg fa-exclamation-circle danger tooltipped"
+             data-position="bottom" data-tooltip="Этот документ готовится в среднем 5 дней, обратите внимание, чтобы вовремя начать подготовку"
+          ></i>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="budget-status" ng-show="showBudgetStatus">
+    <!-- <div class="right">
+        <i class="material-icons close" ng-click="showBudgetStatus = null;">close</i>
+      </div> -->
+    <h6 class="title">
+      Статус формирования бюджета <span class="right green-text">55/60</span>
+    </h6>
+    <p class="budget-row red">
+      Департамент образования города Москвы
+      <span class="right">3/15</span>
+    </p>
+    <p class="budget-row orange">
+      Департамент здравоохранения города Москвы
+      <span class="right">9/15</span>
+    </p>
+    <p class="budget-row yellow">
+      Департамент культуры города Москвы
+      <span class="right">11/15</span>
+    </p>
+    <p class="budget-row green">
+      Департамент городского имущества города Москвы
+      <span class="right">15/15</span>
+    </p>
+    <p class="budget-row">
+      Департамент топливно-энергетического хозяйства города Москвы
+    </p>
+    <p class="budget-row">
+      Департамент социальной защиты населения города Москвы
+    </p>
+    <p class="budget-row">
+      Главное архивное управление города Москвы
+    </p>
+    <p class="budget-row">
+      Департамент науки, промышленной политики и предпринимательства города
+      Москвы
+    </p>
+    <p class="budget-row">
+      Департамент физической культуры и спорта города Москвы
+    </p>
+    <p class="budget-row">
+      Департамент развития новых территорий города Москвы
+    </p>
+  </div>
+</div>
+
+<!-- UI-TREE
+    <div class="tree-container">
+      <script type="text/ng-template" id="nodes_renderer.html">
+            <div>
+            <div ui-tree-handle class="tree-node tree-node-content">
+                <div>
+                    <span>[[node.title]]</span>
+                </div>
+            </div>
+                <div>
+                    <ol ui-tree-nodes="" ng-model="node.nodes">
+                        <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+                        </li>
+                    </ol>
+                </div>
+        </div>
+      </script>
+
+      <div ui-tree id="tree-root" data-drag-enabled="false">
+        <ol ui-tree-nodes="" ng-model="data">
+          <li
+            ng-repeat="node in data"
+            ui-tree-node
+            ng-include="'nodes_renderer.html'"
+          ></li>
+        </ol>
+      </div>
+    </div> -->
+{% endblock %}
